@@ -7,10 +7,15 @@ permalink: /spin-demo
 <head>
     <meta charset="utf-8">
     <title>Spin Demo</title>
+    {% if jekyll.environment %}
+    <script>const jekyllEnvironment = '{{ jekyll.environment }}';</script>
+    {% endif %}
     <script type="module" src="assets/js/spin-demo/spin-demo.js" async></script>
-    <link rel="stylesheet" href="{{'/assets/css/spin-demo.css' | relative_url}}"></style>
+    <link rel="stylesheet" href="assets/css/spin-demo.css">
 </head>
+
 <body>
     Loading app...
 </body>
+
 </html>

@@ -6,7 +6,7 @@ init();
 function init() {
     let sensor = null;
     try {
-        sensor = new AbsoluteOrientationSensor({frequency: 60});
+        sensor = new AbsoluteOrientationSensor({ frequency: 60 });
         sensor.onerror = (event) => {
             // if (event.error.name === "NotAllowedError") {
             // } else if (event.error.name === "NotReadableError") {
@@ -30,10 +30,14 @@ function startApp(sensor) {
 }
 
 function showError(error) {
-    // startApp(new MockSensor({ frequency: 2 }));
-    document.body.innerHTML = `
+    // Set in spin-demo.html
+    if (typeof jekyllEnvironment !== 'undefined' && jekyllEnvironment === 'development') {
+        startApp(new MockSensor({ frequency: 2 }));
+    } else {
+        document.body.innerHTML = `
     <h1>${error.name}</h1>
     <blockquote>${error.message}</blockquote>
     `;
+    }
     console.error(error);
 }
