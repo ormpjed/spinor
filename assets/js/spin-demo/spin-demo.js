@@ -30,14 +30,15 @@ function startApp(sensor) {
 }
 
 function showError(error) {
+    console.error(error);
     // Set in spin-demo.html
     if (typeof jekyllEnvironment !== 'undefined' && jekyllEnvironment === 'development') {
-        startApp(new MockSensor({ frequency: 2 }));
+        const sensor = new MockSensor();
+        startApp(sensor);
     } else {
         document.body.innerHTML = `
     <h1>${error.name}</h1>
     <blockquote>${error.message}</blockquote>
     `;
     }
-    console.error(error);
 }

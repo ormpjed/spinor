@@ -10,7 +10,27 @@ export default class VectorView {
     }
 
     update(spin) {
-        this._element.innerText = spin.map(z => this._formatComplex(z)).join('\n');
+        this._element.innerHTML = //spin.map(z => this._formatComplex(z)).join('\n');
+            `
+<math display="block">
+  <mrow>
+    <mo>[</mo>
+    <mtable>
+      <mtr>
+        <mtd>
+          <mi style="font-family: monospace;">${this._formatComplex(spin[0])}</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi style="font-family: monospace;">${this._formatComplex(spin[1])}</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo>]</mo>
+  </mrow>
+</math>
+`;
     }
 
     _formatReal(x) {

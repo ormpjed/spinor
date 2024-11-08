@@ -1,20 +1,19 @@
 export default class MockSensor {
-    frequency;
-    interval;
+    _frameId;
     onreading = () => {};
 
-    constructor({frequency=60} = {}) {
-        this.frequency = frequency;
-    }
-
     start() {
-        this.interval = setInterval(() => {
-            this.quaternion = [Math.random(), 0, 0, 0];
-            this.onreading();
-        }, 1000 / this.frequency);
+        this._frameId = requestAnimationFrame((time) => this._frame(time));
     }
 
     stop() {
-        clearInterval(this.interval);
+        cancelAnimationFrame(this._frameId);
+    }
+
+    _frame(time) {
+        const phase = time / 2000;
+        this.quaternion = [Math.cos(phase), 0, 0, Math.sin(phase)];
+        this.onreading();
+        this._frameId = requestAnimationFrame((time) => this._frame(time));
     }
 }
