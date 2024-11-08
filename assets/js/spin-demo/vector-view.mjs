@@ -1,36 +1,21 @@
+import MatrixView from "./matrix-view.mjs";
+
 export default class VectorView {
-    _element;
+    _matrixView;
 
     constructor() {
-        this._element = document.createElement('div');
+        this._matrixView = new MatrixView(2, 1, 'mn');
     }
 
     get element() {
-        return this._element;
+        return this._matrixView.element;
     }
 
     update(spin) {
-        this._element.innerHTML = //spin.map(z => this._formatComplex(z)).join('\n');
-            `
-<math display="block">
-  <mrow>
-    <mo>[</mo>
-    <mtable>
-      <mtr>
-        <mtd>
-          <mi style="font-family: monospace;">${this._formatComplex(spin[0])}</mi>
-        </mtd>
-      </mtr>
-      <mtr>
-        <mtd>
-          <mi style="font-family: monospace;">${this._formatComplex(spin[1])}</mi>
-        </mtd>
-      </mtr>
-    </mtable>
-    <mo>]</mo>
-  </mrow>
-</math>
-`;
+      this._matrixView.update([
+        [this._formatComplex(spin[0])],
+        [this._formatComplex(spin[1])],
+      ])
     }
 
     _formatReal(x) {
