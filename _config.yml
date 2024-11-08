@@ -20,6 +20,7 @@
 
 title: Your awesome title
 repository: ormpjed/spinor
+baseurl: spinor
 
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"

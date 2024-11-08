@@ -4,4 +4,4 @@
 
 layout: home
 ---
-[/spin](/spin.html)
+[Spin demo](spin-demo)

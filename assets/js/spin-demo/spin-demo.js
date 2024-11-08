@@ -1,3 +1,4 @@
+import MockSensor from './mock-sensor.mjs';
 import SpinApp from './spin-app.mjs';
 
 init();
