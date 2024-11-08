@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", init);
+init();
 
 function init() {
     let sensor = null;
