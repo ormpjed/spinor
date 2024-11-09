@@ -51,4 +51,30 @@ export class Complex {
         this.real = real;
         this.imag = imag;
     }
+
+    plus(other) {
+        return new Complex(
+            this.real + other.real,
+            this.imag + other.imag
+        );
+    }
+
+    times(other) {
+        return new Complex(
+            this.real * other.real - this.imag * other.imag,
+            this.real * other.imag + this.imag * other.real
+        );
+    }
+
+    norm2() {
+        return Math.pow(this.real, 2) + Math.pow(this.imag, 2);
+    }
 } 
+
+export function spinToEuclideanVector(spin) {
+    return [
+        2 * spin[0].times(spin[1]).real,
+        2 * spin[0].times(spin[1]).imag,
+        spin[0].norm2() - spin[1].norm2(),
+    ];
+}

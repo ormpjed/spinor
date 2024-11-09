@@ -1,8 +1,40 @@
-h1 {
-    color: red;
+body {
+    margin: 0;
 }
 
-mn {
+.top,
+.bottom {
+    height: 50vh;
+    height: 50dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vector {
+    width: fit-content;
+
+    padding: 0.25em 0.5em;
+
     font-family: monospace;
     font-size: xx-large;
+
+    --border-color: light-dark(#000, #fff);
+    --border-width: 2px;
+    --hook-length: 0.5em;
+    --right-hook-start: calc(100% - var(--hook-length));
+    background:
+        linear-gradient(to right, var(--border-color) var(--hook-length), transparent var(--hook-length) var(--right-hook-start), var(--border-color) var(--right-hook-start)) bottom / 100% var(--border-width) no-repeat,
+        linear-gradient(to right, var(--border-color) var(--hook-length), transparent var(--hook-length) var(--right-hook-start), var(--border-color) var(--right-hook-start)) top / 100% var(--border-width) no-repeat,
+        linear-gradient(var(--border-color) 0 0) left / var(--border-width) 100% no-repeat,
+        linear-gradient(var(--border-color) 0 0) right / var(--border-width) 100% no-repeat;
+
+    div {
+        text-align: center;
+    }
+}
+
+/* Error messages */
+h1 {
+    color: red;
 }
