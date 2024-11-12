@@ -5,19 +5,19 @@ export class Quaternion {
         this.values = values;
     }
 
-    get w() {
+    get x() {
         return this.values[0];
     }
 
-    get x() {
+    get y() {
         return this.values[1];
     }
 
-    get y() {
+    get z() {
         return this.values[2];
     }
 
-    get z() {
+    get w() {
         return this.values[3];
     }
 
@@ -35,11 +35,15 @@ export class Quaternion {
 
     times(other) {
         return new Quaternion([
-            this.w * other.w - this.x * other.x - this.y * other.y - this.z * other.z,
             this.w * other.x + this.x * other.w + this.y * other.z - this.z * other.y,
             this.w * other.y - this.x * other.z + this.y * other.w + this.z * other.x,
             this.w * other.z + this.x * other.y - this.y * other.x + this.z * other.w,
+            this.w * other.w - this.x * other.x - this.y * other.y - this.z * other.z,
         ]);
+    }
+
+    conjugated() {
+        return new Quaternion([-this.x, -this.y, -this.z, this.w]);
     }
 }
 
@@ -51,4 +55,30 @@ export class Complex {
         this.real = real;
         this.imag = imag;
     }
+
+    plus(other) {
+        return new Complex(
+            this.real + other.real,
+            this.imag + other.imag
+        );
+    }
+
+    times(other) {
+        return new Complex(
+            this.real * other.real - this.imag * other.imag,
+            this.real * other.imag + this.imag * other.real
+        );
+    }
+
+    norm2() {
+        return Math.pow(this.real, 2) + Math.pow(this.imag, 2);
+    }
 } 
+
+export function spinToEuclideanVector(spin) {
+    return [
+        2 * spin[0].times(spin[1]).real,
+        2 * spin[0].times(spin[1]).imag,
+        spin[0].norm2() - spin[1].norm2(),
+    ];
+}

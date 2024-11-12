@@ -1,8 +1,123 @@
-h1 {
-    color: red;
+:root {
+    color-scheme: dark light;
 }
 
-mn {
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #fbfbfe;
+        --background-color: #1c1b22;
+        color: var(--text-color);
+        background-color: var(--background-color);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --text-color: black;
+        --background-color: white;
+    }
+}
+
+body {
+    margin: 0;
+}
+
+.top {
+    height: 40vh;
+    height: 40dvh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom {
+    height: 60vh;
+    height: 60dvh;
+}
+
+.vector {
+    width: fit-content;
+
+    padding: 0.25em 0.5em;
+
     font-family: monospace;
     font-size: xx-large;
+
+    --border-color: var(--text-color);
+    --border-width: 2px;
+    --hook-length: 0.3em;
+    --right-hook-start: calc(100% - var(--hook-length));
+    background:
+        linear-gradient(to right, var(--border-color) var(--hook-length), transparent var(--hook-length) var(--right-hook-start), var(--border-color) var(--right-hook-start)) bottom / 100% var(--border-width) no-repeat,
+        linear-gradient(to right, var(--border-color) var(--hook-length), transparent var(--hook-length) var(--right-hook-start), var(--border-color) var(--right-hook-start)) top / 100% var(--border-width) no-repeat,
+        linear-gradient(var(--border-color) 0 0) left / var(--border-width) 100% no-repeat,
+        linear-gradient(var(--border-color) 0 0) right / var(--border-width) 100% no-repeat;
+
+    div {
+        text-align: center;
+    }
+}
+
+.tutorial {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+
+    /* Content of tutorial */
+    > :first-child {
+        padding: 0 10px;
+        overflow-y: scroll;
+    }
+
+    /* Footer of tutorial */
+    > :last-child {
+        display: flex;
+        justify-content: space-between;
+
+        padding: 0 30px 50px;
+
+        button {
+            font-size: x-large;
+        }
+    }
+}
+
+.objective {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    font-style: italic;
+
+    /* Completion checkbox */
+    input {
+        pointer-events: none;
+        user-select: none;
+    }
+}
+
+.progress-wrapper {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.progress-meter {
+    position: relative;
+    bottom: 0;
+    left: 0;
+
+    height: 5px;
+
+    content: '';
+    background-color: #26bd26;
+}
+
+/* Error messages */
+h1 {
+    color: red;
 }
