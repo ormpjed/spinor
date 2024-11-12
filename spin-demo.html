@@ -7,12 +7,14 @@ permalink: /spin-demo
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="color-scheme" content="dark light">
     <title>Spin Demo</title>
 
     {% if jekyll.environment %}
     <script>const jekyllEnvironment = '{{ jekyll.environment }}';</script>
     {% endif %}
-    <script type="module" src="assets/js/spin-demo/spin-demo.js" async></script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="module" src="assets/js/spin-demo/spin-app.js" async></script>
 
     <link rel="stylesheet" href="assets/css/spin-demo.css">
 </head>

@@ -2,11 +2,9 @@ import { Complex, Quaternion } from "./math.mjs";
 import Tutorial from "./tutorial.mjs";
 import VectorView from "./vector-view.mjs";
 
-const rotation = new Quaternion([1 / Math.SQRT2, 0, 0, -1 / Math.SQRT2]);
-
-export default class SpinApp {
+export default class SpinDemo {
     _sensor;
-    _orientation = new Quaternion([1, 0, 0, 0]);
+    _orientation = new Quaternion([0, 0, 0, 1]);
 
     _element;
     _children = [];
@@ -41,16 +39,22 @@ export default class SpinApp {
 
         this._orientation = this._orientation.dot(reading) >= 0 ?
             reading : reading.scaled(-1);
-
         const spin = this._orientationToSpin(this._orientation);
         this._children.forEach(c => c.update(spin));
     }
 
-    _orientationToSpin(quaternion) {
-        const orientation = rotation.times(quaternion);
+    R = [
+        [new Complex(1 / Math.SQRT2, 0), new Complex(1 / Math.SQRT2, 0)],
+        [new Complex(0, 1 / Math.SQRT2), new Complex(0, -1 / Math.SQRT2)],
+    ]
+
+    _orientationToSpin(orientation) {
+        const reposition = new Quaternion([-1, 0, 0, 1]).scaled(1 / Math.SQRT2);
+        const r = orientation.times(reposition)
+
         return [
-            new Complex(orientation.w, orientation.x),
-            new Complex(-orientation.y, orientation.z),
+            new Complex(r.w, -r.z),
+            new Complex(r.y, -r.x),
         ];
     }
 }
