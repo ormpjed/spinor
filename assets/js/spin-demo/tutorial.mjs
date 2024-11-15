@@ -96,7 +96,7 @@ export default class Tutorial {
         const footer = document.createElement('div');
         const back = document.createElement('button');
         back.innerText = 'Back';
-        back.onclick = () => this._setStage((this.stageIndex - 1) % stages.length);
+        back.onclick = () => this._setStage((((this.stageIndex - 1) % stages.length) + stages.length) % stages.length);
         const next = document.createElement('button');
         next.innerText = 'Next';
         next.onclick = () => this._setStage((this.stageIndex + 1) % stages.length);
@@ -117,6 +117,7 @@ export default class Tutorial {
         this.element.removeChild(this.element.childNodes[0]);
         this.element.prepend(this.stage.element);
 
+        // TODO: sync
         // MathJax is imported in spin-demo.html. The timeout ensures it is properly loaded.
         setTimeout(() => MathJax.typeset());
     }
@@ -191,7 +192,7 @@ up. In this way, locate the following vector:
         `
 <p>
 One of the amazing properties of spin-\\(\\frac{1}{2}\\) is that rotating by 360
-degrees does not give you back the original state vector, but rather results in
+degrees does not yield the original state vector, but rather results in
 a phase factor of -1. To experience this for yourself, rotate to the negative of
 the previous vector:
 </p>
@@ -213,7 +214,7 @@ the previous vector:
         `
 <p>
 When performing a full rotation of 360 degrees, the axis does not matter. Rotate
-about a horizontal axis instead of the vertical axis to go back to our original
+about a horizontal axis instead of the vertical axis to go back to the original
 vector:
 </p>
 \\[
@@ -239,7 +240,7 @@ other axis as well. Orient your phone horizontally and rotate about the vertical
 axis until you reach the \\(\\hat{y}\\)-up state:
 </p>
 \\[
-e^{i \\theta}\\begin{bmatrix}
+\\frac{e^{i \\theta}}{\\sqrt{2}}\\begin{bmatrix}
 1 \\\\
 i
 \\end{bmatrix}
@@ -250,8 +251,8 @@ come!
 </p>
 `,
         [
-            new Complex(1, 0),
-            new Complex(0, 1)
+            new Complex(Math.SQRT1_2, 0),
+            new Complex(0, Math.SQRT1_2)
         ],
         'state'
     ),
@@ -271,7 +272,7 @@ from the bottom to the top of your screen.
 Now find the \\(\\hat{x}\\)-up state:
 </p>
 \\[
-e^{i \\theta}\\begin{bmatrix}
+\\frac{e^{i \\theta}}{\\sqrt{2}}\\begin{bmatrix}
 1 \\\\
 1
 \\end{bmatrix}
@@ -282,9 +283,68 @@ tilt your device on its side.
 </p>
 `,
         [
-            new Complex(1, 0),
-            new Complex(1, 0)
+            new Complex(Math.SQRT1_2, 0),
+            new Complex(Math.SQRT1_2, 0)
         ],
-        'vector'
+        'state'
     ),
+
+    () => new Stage(`
+<p>
+To generalize what we have experienced so far: as you point the top of your
+device in any direction, a complex vector can be found representing the spin-up
+state along that direction. Of course, spin up along a direction \\(\\hat{n}\\)
+is the same as spin down along \\(-\\hat{n}\\).
+</p>
+<p>
+Rotating about the axis with which the spin system is aligned only changes its phase.
+</p>
+`),
+
+    () => new Stage(`
+<p>
+Importantly, you can turn any spin-\\(\\frac{1}{2}\\) state into any other
+simply through rotation. Test this by coming up with any normalized complex
+2-vector and rotating to it.
+</p>
+`),
+
+    () => {
+        const element = document.createElement('div');
+        const p1 = document.createElement('p');
+        p1.innerHTML = `
+Since your device always has a definite orientation, the previous remark must
+imply that we can naturally associate a direction with any
+spin-\\(\\frac{1}{2}\\) state. This is the formula and its evaluation:
+`;
+        const formula = document.createElement('div');
+        formula.className = 'formula';
+        formula.innerHTML = `
+<span>
+\\(
+\\begin{bmatrix}
+\\alpha \\\\
+\\beta
+\\end{bmatrix}
+\\mapsto
+\\begin{bmatrix}
+\\mathfrak{Re}(2 \\bar{\\alpha} \\beta) \\\\
+\\mathfrak{Im}(2 \\bar{\\alpha} \\beta) \\\\
+\\lVert \\alpha \\rVert^2 - \\lVert \\beta \\rVert^2
+\\end{bmatrix}
+=
+\\)
+</span>
+`;
+        const vector = new VectorView(3, 'real');
+        formula.append(vector.element);
+        
+        const p2 = document.createElement('p');
+        p2.innerHTML = `
+Notice how this vector always describes the vertical axis of your device. The \\(y\\)-axis should point north (though you may experience some sensor drift). 
+`;
+        element.append(p1, formula, p2);
+        const update = (spin) => vector.update(spinToEuclideanVector(spin));
+        return { element, update };
+    },
 ];

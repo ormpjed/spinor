@@ -1,55 +1,58 @@
+function _round(x) {
+    return x.toFixed(2);
+}
+
+const zeroRounded = _round(0);
+
+function _formatReal(x, positivePrefix = '\u00a0', negativePrefix = '-') {
+    const magnitude = _round(Math.abs(x));
+    if (magnitude === zeroRounded) {
+       return positivePrefix + zeroRounded; 
+    } else if (x > 0) {
+        return positivePrefix + magnitude;
+    } else {
+        return negativePrefix + magnitude;
+    }
+}
+
+function _formatComplex(z) {
+    return _formatReal(z.real) + _formatReal(z.imag, ' + ', ' - ') + 'i';
+}
+
 export default class VectorView {
-    _element;
+    element;
     _type;
 
     constructor(size, type) {
         this._type = type;
-        this._element = document.createElement('div');
-        this._element.classList.add('vector');
+        this.element = document.createElement('span');
+        this.element.classList.add('vector');
         for (let _ = 0; _ < size; _++) {
-            this._element.append(document.createElement('div'));
+            this.element.append(document.createElement('div'));
         }
-    }
-
-    get element() {
-        return this._element;
     }
 
     update(vector) {
         for (let i = 0; i < vector.length; i++) {
-            this._element.children[i].innerHTML = this._format(vector[i]);
+            this.element.children[i].innerHTML = this._format(vector[i]);
+        }
+    }
+
+    setColors(...colors) {
+        for (let i = 0; i < colors.length; i++) {
+            console.log(i);
+            
+            this.element.children[i].style.color = colors[i];
         }
     }
 
     _format(x) {
         if (this._type === 'real') {
-            return this._formatReal(x);
+            return _formatReal(x) + '\u00a0';
         } else if (this._type === 'complex') {
-            return this._formatComplex(x);
+            return _formatComplex(x) + '\u00a0';
         } else {
             return x;
         }
-    }
-
-    _round(x) {
-        return x.toFixed(2);
-    }
-
-    _formatPrefixSpaceIfPositive(x) {
-        return (x >= 0 ? '\u00A0' : '') + this._round(x);
-    }
-
-    _formatSignToOperator(x) {
-        return x >= 0 ?
-            ' + ' + this._round(x) :
-            ' - ' + this._round(-x);
-    }
-
-    _formatReal(x) {
-        return this._formatPrefixSpaceIfPositive(x) + '\u00A0';
-    }
-
-    _formatComplex(z) {
-        return this._formatPrefixSpaceIfPositive(z.real) + this._formatSignToOperator(z.imag) + 'i\u00A0';
     }
 }

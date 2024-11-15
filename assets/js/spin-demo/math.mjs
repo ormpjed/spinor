@@ -70,15 +70,27 @@ export class Complex {
         );
     }
 
+    conjugated() {
+        return new Complex(this.real, -this.imag);
+    }
+
+    norm() {
+        return Math.sqrt(this.norm2());
+    }
+
     norm2() {
         return Math.pow(this.real, 2) + Math.pow(this.imag, 2);
+    }
+
+    arg() {
+        return Math.atan2(this.imag, this.real);
     }
 } 
 
 export function spinToEuclideanVector(spin) {
     return [
-        2 * spin[0].times(spin[1]).real,
-        2 * spin[0].times(spin[1]).imag,
+        2 * spin[0].conjugated().times(spin[1]).real,
+        2 * spin[0].conjugated().times(spin[1]).imag,
         spin[0].norm2() - spin[1].norm2(),
     ];
 }
