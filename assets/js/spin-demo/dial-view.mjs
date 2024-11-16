@@ -23,7 +23,7 @@ export default class DialView {
     update(spin) {
         for (let i = 0; i < 2; i++) {
             this._lines[i].style.width = `calc(var(--dial-radius) * ${spin[i].norm()} - var(--dial-thickness) / 2`;
-            this._lines[i].style.transform = `rotate(${spin[i].arg()}rad)`;
+            this._lines[i].style.transform = `rotate(${-spin[i].arg()}rad)`;
         }
     }
 }

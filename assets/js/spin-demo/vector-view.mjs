@@ -40,8 +40,6 @@ export default class VectorView {
 
     setColors(...colors) {
         for (let i = 0; i < colors.length; i++) {
-            console.log(i);
-            
             this.element.children[i].style.color = colors[i];
         }
     }

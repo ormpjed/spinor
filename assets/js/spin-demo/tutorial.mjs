@@ -117,9 +117,16 @@ export default class Tutorial {
         this.element.removeChild(this.element.childNodes[0]);
         this.element.prepend(this.stage.element);
 
-        // TODO: sync
-        // MathJax is imported in spin-demo.html. The timeout ensures it is properly loaded.
-        setTimeout(() => MathJax.typeset());
+        try {
+            // MathJax is imported in spin-demo.html.
+            MathJax.typeset();
+        } catch (error) {
+            if (error.name === "ReferenceError") {
+                // MathJax has not been loaded yet, it wil typeset once it is.
+            } else {
+                console.error(error);
+            }
+        }
     }
 }
 
@@ -319,6 +326,7 @@ spin-\\(\\frac{1}{2}\\) state. This is the formula and its evaluation:
 `;
         const formula = document.createElement('div');
         formula.className = 'formula';
+        // TODO: fraktur deprecated
         formula.innerHTML = `
 <span>
 \\(
@@ -341,7 +349,8 @@ spin-\\(\\frac{1}{2}\\) state. This is the formula and its evaluation:
         
         const p2 = document.createElement('p');
         p2.innerHTML = `
-Notice how this vector always describes the vertical axis of your device. The \\(y\\)-axis should point north (though you may experience some sensor drift). 
+Notice how this vector always describes the vertical axis of your device. (The
+\\(x\\) and \\(y\\)-axis are arbitrary and may drift over time.)
 `;
         element.append(p1, formula, p2);
         const update = (spin) => vector.update(spinToEuclideanVector(spin));
