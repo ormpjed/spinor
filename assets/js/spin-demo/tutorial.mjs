@@ -84,8 +84,11 @@ class StageWithGoal extends Stage {
 
 export default class Tutorial {
     element;
-    stageIndex;
-    stage;
+    _stageIndex;
+    _stage;
+
+    back;
+    next;
 
     constructor() {
         this.element = document.createElement('div');
@@ -94,32 +97,48 @@ export default class Tutorial {
         this.element.append('');
 
         const footer = document.createElement('div');
-        const back = document.createElement('button');
-        back.innerText = 'Back';
-        back.onclick = () => this._setStage((((this.stageIndex - 1) % stages.length) + stages.length) % stages.length);
-        const next = document.createElement('button');
-        next.innerText = 'Next';
-        next.onclick = () => this._setStage((this.stageIndex + 1) % stages.length);
-        footer.append(back);
-        footer.append(next);
+        this.back = document.createElement('button');
+        this.back.innerText = 'Back';
+        this.back.onclick = () => this._setStage(this._stageIndex - 1);
+        this.next = document.createElement('button');
+        this.next.innerText = 'Next';
+        this.next.onclick = () => this._setStage(this._stageIndex + 1);
+        footer.append(this.back);
+        footer.append(this.next);
         this.element.append(footer);
 
         this._setStage(0);
     }
 
     update(spin) {
-        this.stage.update(spin);
+        this._stage.update(spin);
     }
 
     _setStage(index) {
-        this.stageIndex = index;
-        this.stage = stages[index]();
+        if (index < 0 || index > stages.length - 1) {
+            return;
+        }
+
+        if (index === 0) {
+            this.back.setAttribute('disabled', '');
+        } else {
+            this.back.removeAttribute('disabled');
+        }
+
+        if (index === stages.length - 1) {
+            this.next.setAttribute('disabled', '');
+        } else {
+            this.next.removeAttribute('disabled');
+        }
+
+        this._stageIndex = index;
+        this._stage = stages[index]();
         this.element.removeChild(this.element.childNodes[0]);
-        this.element.prepend(this.stage.element);
+        this.element.prepend(this._stage.element);
 
         try {
             // MathJax is imported in spin-demo.html.
-            MathJax.typeset();
+            MathJax.typeset([this._stage.element]);
         } catch (error) {
             if (error.name === "ReferenceError") {
                 // MathJax has not been loaded yet, it wil typeset once it is.
@@ -143,8 +162,8 @@ rotate your device. Tap 'Next' to learn more.
 <p>
 This tutorial was designed to be as accessible as possible. If you are
 interested in the underlying mathematics of spinors, or in further insights into
-the phenomenon of quantum spin, you are invited to explore the accompanying
-website.
+the phenomenon of quantum spin, you are invited to explore the 
+<a href="/">accompanying website.</a>
 </p>
 `),
 
@@ -356,4 +375,29 @@ Notice how this vector always describes the vertical axis of your device. (The
         const update = (spin) => vector.update(spinToEuclideanVector(spin));
         return { element, update };
     },
+
+    () => new Stage(`
+<p>
+As the final part of this tutorial, plug in a flat charging cable if you have
+one, in order to experience the relation between spin and the Dirac belt trick.
+Any double twist can be removed by taking the cable around your device, and this
+corresponds precisely to two phase factors of -1 cancelling out.
+</p>
+`),
+
+    () => new Stage(`
+<p>
+Though this demo is concluded, there is more to explore about spin. Throughout
+the rest of this <a href="/">website</a> you can read about the following
+topics:
+<ul>
+    <li>The maths of rotation</li>
+    <li>A proof for the belt trick</li>
+    <li>Angular momentum without motion</li>
+    <li>The two-state paradigm</li>
+    <li>Relativistic spinors</li>
+    <li>A Lego model for spin-\\(\\frac{1}{2}\\)</li>
+</ul>
+</p>
+`),
 ];
